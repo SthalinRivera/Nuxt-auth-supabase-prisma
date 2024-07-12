@@ -15,11 +15,11 @@ npm install --save vue3-toastify
 Start the development server on `http://localhost:3000`:
 
 
-## instalar NuxtUI
+### instalar NuxtUI
 ```bash
 npx nuxi@latest module add ui
 ```
-# crear archivo  tailwind.config.js
+### crear archivo  tailwind.config.js
 touch tailwind.config.js
 
 ```bash
@@ -30,10 +30,12 @@ content: ["docs/content/**/*.md"],
 };
 ```
 # crear un archivo en ./assets/tailwind.css
+
+```bash
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+```
 ## Production
 
 Build the application for production:
