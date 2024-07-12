@@ -6,37 +6,33 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 
 [Tutorial del curso que estamos levando :](https://www.youtube.com/watch?v=jaGxps_D1dw&list=PLxd1RHU8YgYmTKohDs2lTqGvy0eaZJFfK&index=7&ab_channel=PabloCodes)
 
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
+ nuxt con Pinia :  https://pinia.vuejs.org/ssr/nuxt.html
 
 ## Development Server
 
+https://vue3-toastify.js-bridge.com/get-started/installation.html
+npm install --save vue3-toastify
 Start the development server on `http://localhost:3000`:
+
+
+## instalar NuxtUI
+```bash
+npx nuxi@latest module add ui
+```
+# crear archivo  tailwind.config.js
+touch tailwind.config.js
 
 ```bash
 # npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+ import type { Config } from "tailwindcss";
+export default <Partial<Config>>{
+content: ["docs/content/**/*.md"],
+};
 ```
+# crear un archivo en ./assets/tailwind.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 ## Production
 
