@@ -23,10 +23,11 @@
             <div :class="{ hidden: !isOpen, block: isOpen }"
                 class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                 <div class="text-sm lg:flex-grow">
-                    <!-- <NuxtLink v-for="rota in rotasSistemas()" :key="rota.nome" :to="rota.path"
+                    <NuxtLink v-for="ruta in rutasSistemas()" :key="ruta.name" :to="ruta.path"
                         class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-                        {{ rota.nome }}
-                    </NuxtLink> -->
+                        {{ ruta.name }}
+                    </NuxtLink>
+
                 </div>
                 <div class="flex items-center">
                     <ClientOnly>
@@ -58,13 +59,14 @@
 </template>
 
 <script setup lang="ts">
+import rutasSistemas from '~/utils/rutasSistemas';
+
 const { locale } = useI18n();
 const isOpen = ref(false)
 
 const toggleMenu = () => {
     isOpen.value = !isOpen.value;
 }
-
 
 const colorMode = useColorMode()
 const isDark = computed({
