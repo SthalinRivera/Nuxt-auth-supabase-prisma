@@ -37,10 +37,17 @@ import type { Video } from '~/interfaces/video';
 import { useVideoStore } from '~/stores/video';
 import formatoData from '~/utils/formatoData';
 const { adicionarFavorito } = useVideoStore();
+const {data:videos, error} = await useFetch("/api/v1/videos")
+// const videos = ref<Video[]>([])
+// onMounted(async () => {
+//     videos.value = await $fetch("/api/v1/videos")
+// })
+onMounted( () => {
+    if (error.value) {
+        $toast.error(error.value.statusMessage || "");
+            // videos.value = await $fetch("/api/v1/videos")
+    }
 
-const videos = ref<Video[]>([])
-onMounted(async () => {
-    videos.value = await $fetch("/api/v1/videos")
 })
 
 const { $toast } = useNuxtApp()

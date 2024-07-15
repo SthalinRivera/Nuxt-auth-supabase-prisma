@@ -64,11 +64,23 @@ import { object, string, type InferType } from 'yup'
 
 const isOpen = ref(false)
 const route = useRoute();
-const video = ref<Video>({} as Video);
-onMounted(async () => {
-    video.value = await $fetch(`/api/v1/videos/${route.params.id}`)
-    console.log("aqui se muestra los videos", video);
-})
+const {id} = route.params;
+// const video = ref<Video>({} as Video);
+
+const {data:video}=  await useFetch(`/api/v1/videos/${id}`)
+
+// onMounted(async () => {
+//     video.value = await $fetch(`/api/v1/videos/${route.params.id}`)
+//     console.log("aqui se muestra los videos", video);
+// })
+
+if (!video.value) {
+    throw createError({
+        statusCode:404,
+        statusMessage:"Video no encontrado"
+    })
+    
+}
 type Schema = InferType<typeof schema>
 const schema = object({
     description: string().required('Required').min(3, 'Must be at least 8 characters'),

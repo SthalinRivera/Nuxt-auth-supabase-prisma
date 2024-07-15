@@ -4,6 +4,10 @@ import { H3Event } from "h3";
 const { client } = postgresClient();
 
 export const buscaVideos = async () => {
+  throw createError({
+    statusCode:404,
+    statusMessage:"Error al acceder al video o banco de datos"
+})
   const resultado = await client.query('SELECT * FROM videos ORDER BY description ASC ');
   return resultado.rows as Video[];
 }
