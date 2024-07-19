@@ -11,7 +11,7 @@
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <p>{{ formatoData(video.data_potagem) }}</p>
-           
+
                 <template #footer>
                     <div class="flex justify-between">
                         <UButton @click="favortitos(video)">Agregar a favoritos</UButton>
@@ -37,15 +37,19 @@ import type { Video } from '~/interfaces/video';
 import { useVideoStore } from '~/stores/video';
 import formatoData from '~/utils/formatoData';
 const { adicionarFavorito } = useVideoStore();
-const {data:videos, error} = await useFetch("/api/v1/videos")
+const { data: videos, error } = await useFetch("/api/v1/videos")
 // const videos = ref<Video[]>([])
 // onMounted(async () => {
 //     videos.value = await $fetch("/api/v1/videos")
 // })
-onMounted( () => {
+
+definePageMeta({
+    middleware: ["auth"],
+});
+onMounted(() => {
     if (error.value) {
         $toast.error(error.value.statusMessage || "");
-            // videos.value = await $fetch("/api/v1/videos")
+        // videos.value = await $fetch("/api/v1/videos")
     }
 
 })

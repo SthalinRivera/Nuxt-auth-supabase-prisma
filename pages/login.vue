@@ -1,17 +1,23 @@
 <template>
-  <div>
-    <h1>
-        login de usuarios
-    </h1>
-  </div>
+  <UCard>
+    <template #header>
+      <h1 class="text-2xl text-center">Faça login para acessar a plataforma</h1>
+      <a href="/auth/google" class="block">
+        <UButton block label="Login con Google" color="primary" size="lg">
+          <template #leading>
+            <!-- <IconGoogle /> -->
+          </template>
+        </UButton>
+      </a>
+ 
+    </template>
+  </UCard>
 </template>
 
-<script>
-export default {
-
-}
+<script setup>
+definePageMeta({
+  layout: "auth",
+});
 </script>
 
-<style>
-
-</style>
+<style lang="scss" scoped></style>

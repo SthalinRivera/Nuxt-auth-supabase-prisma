@@ -44,9 +44,9 @@
                         <option value="es">es</option>
                         <option value="en">en</option>
                     </select>
-                    <!-- <ClientOnly v-if="loggedIn">
+                    <ClientOnly v-if="loggedIn">
                         <LayoutUsuario class="mx-2" />
-                    </ClientOnly> -->
+                    </ClientOnly>
                 </div>
             </div>
         </nav>
@@ -63,7 +63,7 @@ import rutasSistemas from '~/utils/rutasSistemas';
 
 const { locale } = useI18n();
 const isOpen = ref(false)
-
+const { loggedIn } = useUserSession();
 const toggleMenu = () => {
     isOpen.value = !isOpen.value;
 }
