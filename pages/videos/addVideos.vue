@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '#ui/types'
 import { object, string, type InferType } from 'yup'
+
+
 const router = useRouter()
 const { $toast } = useNuxtApp();
+const {user}  =useUserSession();
+definePageMeta({
+    middleware:['auth'],
+    permiso: "ADMINISTRADOR",
+})
 type Schema = InferType<typeof schema>
 const schema = object({
     description: string().required('Required').min(3, 'Must be at least 8 characters'),
@@ -22,7 +29,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         await $fetch("/api/v1/videos",
             {
                 method: "POST",
-                body: state,
+                body: {
+                    ...state,
+                    usuarioId: user.value?.usuarioId,
+                }
             }
         )
         router.push("/videos")

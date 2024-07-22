@@ -21,9 +21,12 @@
                 </button>
             </div>
             <div :class="{ hidden: !isOpen, block: isOpen }"
-                class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-                <div class="text-sm lg:flex-grow">
-                    <NuxtLink v-for="ruta in rutasSistemas()" :key="ruta.name" :to="ruta.path"
+                class="w-full block  lg:flex lg:items-center lg:w-auto">
+                <div class="text-sm " v-for="ruta in rutasSistemas()" :key="ruta.name">
+                    <NuxtLink 
+                    
+                    v-if="!ruta.permiso || ruta.permiso===user?.permiso"
+                    :to="ruta.path"
                         class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                         {{ ruta.name }}
                     </NuxtLink>
@@ -63,7 +66,7 @@ import rutasSistemas from '~/utils/rutasSistemas';
 
 const { locale } = useI18n();
 const isOpen = ref(false)
-const { loggedIn } = useUserSession();
+const { loggedIn, user } = useUserSession();
 const toggleMenu = () => {
     isOpen.value = !isOpen.value;
 }

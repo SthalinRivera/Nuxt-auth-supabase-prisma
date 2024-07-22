@@ -3,4 +3,6 @@ export interface Video{
     description: string;
     url:string;
     data_potagem:string;
+    usuarioId: number;
+    
 }

@@ -1,15 +1,10 @@
 <template>
     <div>
-        <Header />
-        page index
-        <div>
-   
-        </div>
+        <Home />
     </div>
 </template>
 
 <script>
-
 
 
 </script>
