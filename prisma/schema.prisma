@@ -13,31 +13,84 @@ generator client {
 //   url      = env("DATABASE_URL")
 // }
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-
-model Video{
-  id Int @id @default(autoincrement())
-  description String
-  url String
+model Video {
+  id           Int      @id @default(autoincrement())
+  description  String
+  url          String
   data_potagem DateTime @default(now())
-  usuario Usuario? @relation(fields: [usuarioId], references: [id])
-  usuarioId Int
+  usuario      Usuario? @relation(fields: [usuarioId], references: [id_usuario])
+  usuarioId    Int
 }
- model Usuario {
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  data_creada DateTime @default(now())
-  videos Video[]
-  permiso Permiso @relation( fields: [permisoID], references: [id])
-  permisoID Int
 
- }
- model Permiso {
-  id Int @id @default(autoincrement())
-  name String
+model Usuario {
+  id_usuario     Int            @id @default(autoincrement())
+  name           String
+  email          String         @unique
+  data_creada    DateTime       @default(now())
+  videos         Video[]
+  telefono       String?
+  direccion      String?
+  permiso        Permiso        @relation(fields: [permisoID], references: [id])
+  permisoID      Int
+  pedidos        Pedido[]
+  notificaciones Notificacion[]
+}
+
+model Permiso {
+  id       Int       @id @default(autoincrement())
+  name     String
   usuarios Usuario[]
- }
+}
+
+model Categoria {
+  id_categoria Int        @id @default(autoincrement())
+  nombre       String
+  descripcion  String?
+  productos    Producto[]
+}
+
+model Producto {
+  id_producto    Int              @id @default(autoincrement())
+  nombre         String
+  descripcion    String?
+  precio         Float
+  precio_descuento Float? 
+  stock          Int
+  imagen_url     String?
+  id_categoria   Int
+  categoria      Categoria        @relation(fields: [id_categoria], references: [id_categoria])
+  detallesPedido DetallesPedido[]
+}
+
+model DetallesPedido {
+  id_detalle  Int      @id @default(autoincrement())
+  id_pedido   Int
+  id_producto Int
+  cantidad    Int
+  precio      Float
+  pedido      Pedido   @relation(fields: [id_pedido], references: [id_pedido])
+  producto    Producto @relation(fields: [id_producto], references: [id_producto])
+}
+
+model Pedido {
+  id_pedido    Int              @id @default(autoincrement())
+  id_usuario   Int
+  fecha_pedido DateTime         @default(now())
+  estado       String
+  total        Float
+  usuario      Usuario          @relation(fields: [id_usuario], references: [id_usuario])
+  detalles     DetallesPedido[]
+}
+
+model Notificacion {
+  id_notificacion Int      @id @default(autoincrement())
+  id_usuario      Int
+  mensaje         String
+  fecha_envio     DateTime @default(now())
+  estado          String
+  usuario         Usuario  @relation(fields: [id_usuario], references: [id_usuario])
+}

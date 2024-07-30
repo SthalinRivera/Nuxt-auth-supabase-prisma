@@ -33,12 +33,12 @@ export default oauth.googleEventHandler({
 
     await setUserSession(event, {
       user: {
-        id: user.id,
+        id: user.id_usuario,
         email: user.email,
         urlFoto: user.picture,
         name: String(user.name).trim(),
         permiso: usuario.permiso.name,
-        usuarioId: usuario?.id,
+        usuarioId: usuario?.id_usuario,
       },
     });
     return sendRedirect(event, "/");

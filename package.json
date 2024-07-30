@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
+    "daisyui": "^4.12.10",
     "prisma": "^5.17.0"
   }
 }
