@@ -9,4 +9,18 @@ declare module '#auth-utils'{
     }
 }
 
+import { ToastContainerOptions, toast, type Content } from 'vue3-toastify';
+
+declare module '#app' {
+    interface NuxtApp {
+        $toast: {
+            success: (message: Content) => void;
+            error: (message: Content) => void;
+            // Puedes agregar más funciones aquí si lo necesitas
+        };
+    }
+}
+
+
 export {};
+

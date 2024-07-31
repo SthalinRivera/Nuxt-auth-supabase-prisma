@@ -13,7 +13,7 @@ const schema = object({
     descripcion: string().required('Required').min(3, 'Must be at least 3 characters'),
     imagen_url: string().url().nullable().min(8, 'Must be at least 8 characters').required('Required')
 })
-
+type CategoriaOption = { label: string; value: number };
 const state = reactive({
     nombre: '',
     descripcion: '',
@@ -21,9 +21,10 @@ const state = reactive({
     precio_descuento: '',
     stock: '',
     imagen_url: '',
-    id_categoria: undefined,
+    id_categoria: undefined as CategoriaOption | undefined,
     options: [] as { label: string; value: number }[]
 })
+
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
     try {
@@ -44,7 +45,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 'Content-Type': 'application/json'
             }
         });
-        
+
         router.push("/productos");
         $toast.success("Producto agregado");
     } catch (error) {

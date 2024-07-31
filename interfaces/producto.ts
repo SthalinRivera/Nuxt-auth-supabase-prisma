@@ -4,6 +4,7 @@ export interface Producto {
     nombre: string;
     descripcion?: string | null; // Campo opcional o puede ser null
     precio: number;
+    precio_descuento:number;
     stock: number;
     imagen_url?: string | null;  // Campo opcional o puede ser null
     id_categoria: number;

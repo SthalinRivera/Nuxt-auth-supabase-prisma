@@ -2,52 +2,39 @@
     <div>
         <div class="">
             <h1 class="text-4xl text-center mb-2">{{ $t("titulo") }}</h1>
-            <div class="grid md:grip-cols-1 sm:grid-cols-2 lg:grip-cols-3 items-center justify-center gap-2">
-                <div>
-                    <div class="flex justify-between m-2">
-                        <UButton icon="i-heroicons-pencil-square" size="sm" color="primary" variant="solid"
-                            label="Editar" @click="abrirModal" :trailing="false" />
-                        <UButton icon="i-heroicons-pencil-square" size="sm" color="red" variant="solid"
-                            label="Eliminar Video" @click="deleteVideo" :trailing="false" />
+            <NuxtLink to="/productos">Regresa productos</NuxtLink>
+            <!-- component -->
+            <div
+                class="relative flex bg-clip-border rounded-xl bg-white text-gray-700 shadow-md w-full max-w-[48rem] flex-row">
+                <div
+                    class="relative w-2/5 m-0 overflow-hidden text-gray-700 bg-white rounded-r-none bg-clip-border rounded-xl shrink-0">
+                    <img :src="producto.imagen_url" class="h-full w-full object-cover" />
+                </div>
+                <div class="p-6">
+                    <h6
+                        class="block mb-4 font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700 uppercase">
+                        {{ producto.nombre }}
+                    </h6>
+                    <p class="block font-sans text-base font-medium leading-relaxed text-blue-gray-900 antialiased">
+                        <span class="text-xl font-bold text-slate-900">S/. {{ producto.precio_descuento }} </span>
+                        <span class="text-sm text-slate-900 line-through">S/.{{ producto.precio }} </span>
+                    </p>
+                    <p class="block mb-8 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
+                        {{ producto.descripcion }}
+                    </p>
+                    <div class="  p-6 pt-0">
+                        <a href="#"
+                            class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            Agregar al carrito
+                        </a>
                     </div>
-
-                    <UCard class="w-[800px justify-center">
-                        <template #header>
-                            {{ video.description }}
-                        </template>
-                        <iframe class="h-[500px] w-full" :src="video.url" title="YouTube video player" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        <p v-data-horario="'dd/mm/yyyy'">{{ video.data_potagem }}</p>
-                        <template #footer>
-                            <div class="flex justify-between">
-                            </div>
-                        </template>
-                    </UCard>
                 </div>
             </div>
-
-            <UModal v-model="isOpen">
-                <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-                    <template #header>
-                        <h1 class="text-4xl text-center mb-2">{{ $t("actulizar_video") }}</h1>
-                    </template>
-                    <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-                        <UFormGroup label="Descripción" name="description">
-                            <UInput v-model="state.description" />
-                        </UFormGroup>
-                        <UFormGroup label="Url" name="url">
-                            <UInput v-model="state.url" type="text" />
-                        </UFormGroup>
-                        <UButton type="submit">
-                            Submit
-                        </UButton>
-                    </UForm>
-                    <template #footer>
-                        <Placeholder class="h-8" />
-                    </template>
-                </UCard>
-            </UModal>
         </div>
     </div>
 </template>
@@ -64,22 +51,23 @@ import { object, string, type InferType } from 'yup'
 
 const isOpen = ref(false)
 const route = useRoute();
-const {id} = route.params;
+const { id } = route.params;
 // const video = ref<Video>({} as Video);
 
-const {data:video}=  await useFetch(`/api/v1/videos/${id}`)
+const { data: producto } = await useFetch(`/api/v1/productos/${id}`)
+
 
 // onMounted(async () => {
 //     video.value = await $fetch(`/api/v1/videos/${route.params.id}`)
 //     console.log("aqui se muestra los videos", video);
 // })
 
-if (!video.value) {
+if (!producto.value) {
     throw createError({
-        statusCode:404,
-        statusMessage:"Video no encontrado"
+        statusCode: 404,
+        statusMessage: "Video no encontrado"
     })
-    
+
 }
 type Schema = InferType<typeof schema>
 const schema = object({
@@ -92,46 +80,12 @@ const schema = object({
 const router = useRouter()
 const { $toast } = useNuxtApp();
 const state = reactive({
-    id: 0,
-    description: '',
-    url: ''
+    id_producto: 0,
+    descripcion: '',
+    imagen_url: ''
 })
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-    // Do something with event.data
-    try {
-        await $fetch(`/api/v1/videos/${route.params.id}`,
-            {
-                method: "PUT",
-                body: state,
-            }
-        )
-        router.push("/videos")
-        $toast.success("video actulizado")
-        isOpen.value = false;
-    } catch (error) {
-        $toast.error("Error al actualizar video")
-    }
-    console.log(event.data)
-}
-const abrirModal = () => {
-    state.description = video.value.description;
-    state.url = video.value.url;
-    state.id = video.value.id;
-    isOpen.value = true;
-}
-const deleteVideo = async () => {
-    try {
-        await $fetch(`/api/v1/videos/${route.params.id}`,
-            {
-                method: "DELETE",
-            }
-        )
-        router.push("/videos")
-        $toast.success("video eliminado")
-    } catch (error) {
-        $toast.error("Error al eliminar video")
 
-    }
-}
+
+
 </script>
 <style lang="scss" scoped></style>

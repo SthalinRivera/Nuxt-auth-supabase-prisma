@@ -15,21 +15,42 @@ export const buscarTodos = async () => {
 }
 export const buscaPorId = async (event: H3Event) => {
   const request = getRouterParams(event);
-  if (!request.id) {
+  console.log(request);
+  
+  if (!request.id_producto) {
     throw createError({
       statusCode: 400,
       name: "video invalido",
       //  message: error.message  
     });
   }
-  const video = prisma.video.findFirst({
+  const producto = prisma.producto.findFirst({
     where: {
-      id: +request.id,
+      id_producto: +request.id_producto,
     }
   })
-  return !video ? "video no encontrado" : video;
+  return !producto ? "producto no encontrado" : producto;
 };
 
+export const buscaPorCategoria = async (event: H3Event) => {
+  const request = getRouterParams(event);
+  if (!request.id_categoria) {
+    throw createError({
+      statusCode: 400,
+      name: "Categoria invalida",
+      message: "La categoría es requerida",
+    });
+  }
+  const productos = await prisma.producto.findMany({
+    where: {
+      id_categoria: +request.id_categoria,
+    },
+    include: {
+      categoria: true, 
+    },
+  });
+  return productos.length === 0 ? "No se encontraron productos para esta categoría" : productos;
+};
 
 export const adicionar = async (event: H3Event): Promise<string> => {
   try {
@@ -44,7 +65,7 @@ export const adicionar = async (event: H3Event): Promise<string> => {
     throw createError({
       statusCode: 500,
       name: "Error crear producto",
-       message: error.message  
+      //  message: error.message  
     });
   }
 };
